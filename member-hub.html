@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>The First Spark – Spark Door Member Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        :root {
+            --bg: #050509;
+            --bg-card: #11111a;
+            --bg-soft: #181824;
+            --accent: #ffc857;
+            --accent-soft: rgba(255, 200, 87, 0.12);
+            --accent-strong: #ffda7a;
+            --text-main: #f7f1e1;
+            --text-soft: rgba(247, 241, 225, 0.7);
+            --border-subtle: rgba(247, 241, 225, 0.12);
+            --danger: #ff4f6b;
+            --success: #5be7a9;
+            --muted: rgba(247, 241, 225, 0.45);
+            --glow: 0 0 30px rgba(255, 200, 87, 0.25);
+            --radius-lg: 18px;
+            --radius-xl: 22px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+            background: radial-gradient(circle at top, #0b0b18 0%, #050509 45%, #020107 100%);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+        }
+
+        header {
+            border-radius: var(--radius-xl);
+            padding: 22px 24px;
+            border: 1px solid var(--border-subtle);
+            background:
+                radial-gradient(circle at top left, rgba(255, 200, 87, 0.06) 0, transparent 55%),
+                linear-gradient(135deg, rgba(16, 16, 32, 0.95), rgba(5, 5, 16, 0.98));
+            box-shadow: var(--glow);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .spark-glyph {
+            width: 54px;
+            height: 54px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 200, 87, 0.4);
+            background:
+                radial-gradient(circle at center, rgba(255, 200, 87, 0.35) 0, transparent 70%),
+                conic-gradient(from 220deg, rgba(255, 200, 87, 0.9), rgba(255, 255, 255, 0.9), rgba(255, 200, 87, 0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 35px rgba(255, 200, 87, 0.5);
+        }
+
+        .spark-glyph-inner {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #050509 0, #050509 60%, rgba(5, 5, 9, 0.7) 100%);
+            border: 2px solid rgba(247, 241, 225, 0.9);
+            position: relative;
+        }
+
+        .spark-glyph-inner::before,
+        .spark-glyph-inner::after {
+            content: "";
+            position: absolute;
+            inset: 6px;
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 200, 87, 0.7);
+        }
+
+        .spark-glyph-inner::after {
+            inset: 11px;
+            border-style: solid;
+            border-color: rgba(255, 200, 87, 0.5);
+        }
+
+        .spark-meta {
+            flex: 1;
+        }
+
+        .spark-meta h1 {
+            margin: 0 0 4px 0;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .spark-meta p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-soft);
+        }
+
+        .spark-tagline {
+            margin-top: 6px;
+            font-size: 0.82rem;
+            color: var(--muted);
+        }
+
+        .spark-tagline span {
+            color: var(--accent-strong);
+        }
+
+        .spark-status-chip {
+            border-radius: 999px;
+            padding: 6px 10px;
+            background: rgba(12, 255, 169, 0.08);
+            border: 1px solid rgba(91, 231, 169, 0.6);
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .spark-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 12px rgba(91, 231, 169, 0.9);
+        }
+
+        @media (max-width: 720px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        @media (max-width: 880px) {
+            .status-bar {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .stat {
+            border-radius: var(--radius-lg);
+            padding: 10px 12px;
+            border: 1px solid var(--border-subtle);
+            background: linear-gradient(145deg, rgba(16, 16, 32, 0.98), rgba(10, 10, 24, 0.98));
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .stat-pill {
+            font-size: 0.7rem;
+            color: var(--accent-strong);
+            margin-top: 4px;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 2fr 1.4fr;
+            gap: 18px;
+        }
+
+        @media (max-width: 960px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            border-radius: var(--radius-xl);
+            padding: 16px 16px 18px 16px;
+            border: 1px solid var(--border-subtle);
+            background: radial-gradient(circle at top left, rgba(255, 200, 87, 0.03) 0, transparent 50%),
+                        linear-gradient(145deg, rgba(10, 10, 24, 0.98), rgba(4, 4, 14, 0.98));
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            margin: 0 0 6px 0;
+            font-size: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .section-sub {
+            margin: 0 0 10px 0;
+            font-size: 0.82rem;
+            color: var(--text-soft);
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 960px) {
+            .cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 720px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            border-radius: var(--radius-lg);
+            padding: 10px 10px 12px 10px;
+            background: var(--bg-card);
+            border: 1px solid rgba(247, 241, 225, 0.08);
+            position: relative;
+        }
+
+        .card-title {
+            font-size: 0.92rem;
+            margin: 0 0 4px 0;
+        }
+
+        .card-description {
+            font-size: 0.8rem;
+            color: var(--text-soft);
+            margin: 0 0 8px 0;
+        }
+
+        .card-badge {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--accent-strong);
+        }
+
+        .card-tag-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .tag-pill {
+            font-size: 0.68rem;
+            border-radius: 999px;
+            padding: 3px 7px;
+            border: 1px solid rgba(247, 241, 225, 0.14);
+            color: var(--muted);
+        }
+
+        .tag-pill.gold {
+            border-color: rgba(255, 200, 87, 0.7);
+            color: var(--accent-strong);
+            background: rgba(255, 200, 87, 0.08);
+        }
+
+        .tag-pill.green {
+            border-color: rgba(91, 231, 169, 0.7);
+            color: var(--success);
+            background: rgba(91, 231, 169, 0.08);
+        }
+
+        .tag-pill.rose {
+            border-color: rgba(255, 79, 107, 0.7);
+            color: var(--danger);
+            background: rgba(255, 79, 107, 0.08);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            font-size: 0.8rem;
+            border-radius: 999px;
+            padding: 7px 12px;
+            border: 1px solid rgba(247, 241, 225, 0.14);
+            background: rgba(10, 10, 24, 0.95);
+            color: var(--text-main);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.12s ease, transform 0.06s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+        }
+
+        .btn-main {
+            border-color: rgba(255, 200, 87, 0.8);
+            background: radial-gradient(circle at top, rgba(255, 200, 87, 0.18), rgba(10, 10, 24, 1));
+        }
+
+        .btn-ghost {
+            background: rgba(10, 10, 24, 0.9);
+        }
+
+        .btn:hover {
+            transform: translateY(-0.5px);
+            box-shadow: 0 0 16px rgba(255, 200, 87, 0.22);
+            border-color: rgba(255, 200, 87, 0.9);
+        }
+
+        .btn-small {
+            font-size: 0.76rem;
+            padding: 5px 10px;
+        }
+
+        .btn-path {
+            flex: 1 1 90px;
+            justify-content: center;
+        }
+
+        .btn-path.active {
+            background: radial-gradient(circle at top, rgba(255, 200, 87, 0.26), rgba(10, 10, 24, 1));
+            border-color: rgba(255, 200, 87, 0.9);
+            box-shadow: 0 0 18px rgba(255, 200, 87, 0.36);
+        }
+
+        .pill-note {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin: 6px 0 0 0;
+        }
+
+        .activity-list {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0 0;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            font-size: 0.78rem;
+            padding: 6px 7px;
+            border-radius: 10px;
+            border: 1px solid rgba(247, 241, 225, 0.06);
+            background: rgba(8, 8, 20, 0.95);
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .activity-left {
+            color: var(--text-soft);
+        }
+
+        .activity-time {
+            font-size: 0.7rem;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .activity-empty {
+            font-size: 0.8rem;
+            color: var(--muted);
+            text-align: center;
+            padding: 14px 4px 4px 4px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        @media (max-width: 720px) {
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="page">
+    <!-- HEADER -->
+    <header>
+        <div class="spark-glyph">
+            <div class="spark-glyph-inner"></div>
+        </div>
+        <div class="spark-meta">
+            <h1>The First Spark • Spark Door Hub</h1>
+            <p>Choose a path. Run a ritual. Ship a new way of life.</p>
+            <p class="spark-tagline">
+                You are the <span>Player</span>. This is your HUD. Every log here is proof-of-play.
+            </p>
+        </div>
+        <div>
+            <div class="spark-status-chip">
+                <span class="spark-status-dot"></span>
+                Live Session • Tracking Local Progress
+            </div>
+        </div>
+    </header>
+
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <div class="stat">
+            <div class="stat-value" id="xp-count">0</div>
+            <div class="stat-label">XP Earned</div>
+            <div class="stat-pill">+33 Press • +55 Save Ring</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="ritual-count">0</div>
+            <div class="stat-label">Press Starts</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="ship-count">0</div>
+            <div class="stat-label">Save Rings</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="rank">Ember</div>
+            <div class="stat-label">Current Rank</div>
+            <div class="stat-pill" id="rank-note">0–99 XP • Ember</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="current-path">—</div>
+            <div class="stat-label">Current Path</div>
+            <div class="stat-pill" id="path-note">Choose below</div>
+        </div>
+    </div>
+
+    <div class="layout">
+        <!-- LEFT COLUMN -->
+        <div>
+            <!-- START HERE: MIRROR PATH -->
+            <section class="section">
+                <h2 class="section-title">✨ Start Here: The Mirror Path</h2>
+                <p class="section-sub">
+                    First loop: pick a path, run one ritual, ship one Save Ring. Don’t overthink it.
+                    The Game starts when you take action.
+                </p>
+                <div class="cards">
+                    <div class="card">
+                        <h3 class="card-title">Step 1 — Choose Your Path</h3>
+                        <p class="card-description">
+                            Tap the word that matches your current chapter: Mirror, Glitch, Fire, Garden, or Source.
+                            You can change it later. This just sets the tone of how you play.
+                        </p>
+                        <span class="card-badge">Identity</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Step 2 — Run Press Start</h3>
+                        <p class="card-description">
+                            Take 33 breaths or 1 focused minute. Feel your awareness behind the eyes.
+                            Then hit “Complete Ritual” to log your first proof-of-play.
+                        </p>
+                        <span class="card-badge">Ritual</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Step 3 — Log One Save Ring</h3>
+                        <p class="card-description">
+                            Ship something tiny: a message, a cleanup, a hard truth, a money move.
+                            Log it as a Save Ring so your XP reflects your real life moves.
+                        </p>
+                        <span class="card-badge">Momentum</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PATH SELECTOR -->
+            <section class="section">
+                <h2 class="section-title">🗺️ Your Path</h2>
+                <p class="section-sub">
+                    Your path is your current operating mode — not your forever identity.
+                    It helps you aim your rituals at what actually needs to shift.
+                </p>
+                <div class="btn-row" id="path-buttons">
+                    <button class="btn btn-ghost btn-path" data-path="Mirror" onclick="setPath('Mirror')">🪞 Mirror</button>
+                    <button class="btn btn-ghost btn-path" data-path="Glitch" onclick="setPath('Glitch')">⚡ Glitch</button>
+                    <button class="btn btn-ghost btn-path" data-path="Fire" onclick="setPath('Fire')">🔥 Fire</button>
+                    <button class="btn btn-ghost btn-path" data-path="Garden" onclick="setPath('Garden')">🌱 Garden</button>
+                    <button class="btn btn-ghost btn-path" data-path="Source" onclick="setPath('Source')">🌀 Source</button>
+                </div>
+                <p class="pill-note">
+                    Mirror = honesty • Glitch = pattern • Fire = action • Garden = integration • Source = stillness.
+                </p>
+            </section>
+
+            <!-- CORE RITUALS -->
+            <section class="section">
+                <h2 class="section-title">⚙️ Core Rituals (Daily Ops)</h2>
+                <p class="section-sub">
+                    These are your new system calls. Each one is small on purpose. You’re training proof-of-play,
+                    not perfection.
+                </p>
+                <div class="cards">
+                    <div class="card">
+                        <h3 class="card-title">⚡ Press Start</h3>
+                        <p class="card-description">
+                            One conscious breath sequence, one choice to be the Player right now. Use it
+                            when you feel overwhelmed, lost, or looping.
+                        </p>
+                        <div class="btn-row">
+                            <button class="btn btn-main btn-small" onclick="completePressStart()">Complete Ritual (+33 XP)</button>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill gold">State Shift</span>
+                            <span class="tag-pill">Takes 1–2 min</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">💾 Save Ring</h3>
+                        <p class="card-description">
+                            Any shipped move that tightens your reality: sent message, posted content, money move,
+                            clutter cleared, boundary held. Log it or it didn’t happen.
+                        </p>
+                        <div class="btn-row">
+                            <button class="btn btn-main btn-small" onclick="completeSaveRing()">Log Save Ring (+55 XP)</button>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill green">Momentum</span>
+                            <span class="tag-pill">Tracks real life</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">🧠 Mirror Check (Optional)</h3>
+                        <p class="card-description">
+                            Ask: “Where am I lying to myself?” or “What pattern keeps repeating?”
+                            You can write it down elsewhere — here, just log that you saw it.
+                        </p>
+                        <div class="btn-row">
+                            <button class="btn btn-ghost btn-small" onclick="logMirrorCheck()">Log Mirror Insight (+13 XP)</button>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill rose">Shadow Work</span>
+                            <span class="tag-pill">Tiny, honest</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ARTIFACTS -->
+            <section class="section">
+                <h2 class="section-title">📦 Your Artifacts</h2>
+                <p class="section-sub">
+                    Tools that carry code. Start with the free ones, then move into Pro when it feels right.
+                </p>
+                <div class="cards">
+                    <div class="card">
+                        <h3 class="card-title">📜 The First Spark Origin (PDF)</h3>
+                        <p class="card-description">
+                            The moment nothing turned into everything. Core mythos, short and printable.
+                        </p>
+                        <div class="btn-row">
+                            <a href="#" class="btn btn-main btn-small">Download</a>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill gold">Free</span>
+                            <span class="tag-pill">Lore</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">🌀 First Spark Sigil Pack</h3>
+                        <p class="card-description">
+                            Triangle, dot, waves, infinity — starter sigils for remembrance and courage.
+                        </p>
+                        <div class="btn-row">
+                            <a href="#" class="btn btn-main btn-small">Download Pack</a>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill gold">Free</span>
+                            <span class="tag-pill">Sigilcraft</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📘 Core Code Survival Guide</h3>
+                        <p class="card-description">
+                            Notes for living through collapse with a Player mindset. Micro survival ops.
+                        </p>
+                        <div class="btn-row">
+                            <a href="#" class="btn btn-ghost btn-small">View Drop</a>
+                        </div>
+                        <div class="card-tag-row">
+                            <span class="tag-pill green">Drop</span>
+                            <span class="tag-pill">Playbook</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+            <!-- RECENT ACTIVITY -->
+            <section class="section">
+                <h2 class="section-title">📡 Recent Activity</h2>
+                <p class="section-sub">
+                    This is your audit trail. When you doubt yourself, scroll this — not your fear.
+                </p>
+                <ul class="activity-list" id="activity-list">
+                    <!-- JS fills items -->
+                </ul>
+            </section>
+
+            <!-- QUICK LINKS -->
+            <section class="section">
+                <h2 class="section-title">🔗 Quick Portals</h2>
+                <p class="section-sub">
+                    Places your future self will be glad you went.
+                </p>
+                <div class="links-grid">
+                    <button class="btn btn-ghost">
+                        💼 Open Wallet / Offers
+                    </button>
+                    <button class="btn btn-ghost">
+                        💬 Join Discord / Community
+                    </button>
+                    <button class="btn btn-ghost">
+                        ✉️ Email The First Spark
+                    </button>
+                    <button class="btn btn-ghost">
+                        🎥 Go to YouTube / TikTok
+                    </button>
+                </div>
+                <p class="pill-note">
+                    You can wire these to real links later. For now, the habit is what matters.
+                </p>
+            </section>
+
+            <!-- UPCOMING DROPS -->
+            <section class="section">
+                <h2 class="section-title">🔥 Upcoming Drops</h2>
+                <p class="section-sub">
+                    These are the next visible glitches in the grid.
+                </p>
+                <div class="cards">
+                    <div class="card">
+                        <h3 class="card-title">Sigil Deck (Sparked Ones)</h3>
+                        <p class="card-description">
+                            44-card deck for daily pulls inside collapse & creation.
+                        </p>
+                        <span class="card-badge">In Design</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">The First Spark (YA Novel)</h3>
+                        <p class="card-description">
+                            Nova, the simulation, and the First Spark as narrator — Book 1.
+                        </p>
+                        <span class="card-badge">Lore Drop</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">EcoEmpire Blueprint</h3>
+                        <p class="card-description">
+                            The off-grid, Hocking Hills chapter of this story.
+                        </p>
+                        <span class="card-badge">Future Map</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Basic user data model
+    let userData = {
+        xp: 0,
+        rituals: 0,
+        saves: 0,
+        rank: "Ember",
+        path: "",
+        activity: []
+    };
+
+    const STORAGE_KEY = "tfsSparkDoorHub_v1";
+
+    // Load from localStorage
+    function loadUserData() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                userData = { ...userData, ...parsed };
+            }
+        } catch (e) {
+            console.error("Error loading data", e);
+        }
+    }
+
+    function saveUserData() {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+        } catch (e) {
+            console.error("Error saving data", e);
+        }
+    }
+
+    function addActivity(text) {
+        const now = new Date();
+        const timestamp = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        userData.activity.unshift({ text, time: timestamp });
+        if (userData.activity.length > 40) {
+            userData.activity.pop();
+        }
+    }
+
+    function addXP(amount) {
+        userData.xp += amount;
+        updateRank();
+    }
+
+    function updateRank() {
+        const xp = userData.xp;
+        let rank = "Ember";
+        let note = "0–99 XP • Ember";
+
+        if (xp >= 100 && xp < 250) {
+            rank = "Flame";
+            note = "100–249 XP • Flame (you’re moving)";
+        } else if (xp >= 250 && xp < 500) {
+            rank = "Torch";
+            note = "250–499 XP • Torch (you’re lighting others)";
+        } else if (xp >= 500 && xp < 900) {
+            rank = "Beacon";
+            note = "500–899 XP • Beacon (you’re visible in the dark)";
+        } else if (xp >= 900) {
+            rank = "Signal";
+            note = "900+ XP • Signal (you are the glitch)";
+        }
+
+        userData.rank = rank;
+        const rankEl = document.getElementById("rank");
+        const noteEl = document.getElementById("rank-note");
+        if (rankEl) rankEl.textContent = rank;
+        if (noteEl) noteEl.textContent = note;
+    }
+
+    function setPath(pathName) {
+        userData.path = pathName;
+        let note = "";
+        switch (pathName) {
+            case "Mirror":
+                note = "Mirror • honesty and brutal clarity.";
+                break;
+            case "Glitch":
+                note = "Glitch • watching patterns and numbers.";
+                break;
+            case "Fire":
+                note = "Fire • big moves, money and momentum.";
+                break;
+            case "Garden":
+                note = "Garden • body, home, relationships.";
+                break;
+            case "Source":
+                note = "Source • stillness, prayer, remembrance.";
+                break;
+            default:
+                note = "Choose a path below.";
+        }
+        addActivity(`Path set to ${pathName}.`);
+        updateDisplay();
+        const pathNote = document.getElementById("path-note");
+        if (pathNote) pathNote.textContent = note;
+
+        // update buttons' active state
+        const btns = document.querySelectorAll(".btn-path");
+        btns.forEach(btn => {
+            if (btn.getAttribute("data-path") === pathName) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+
+        saveUserData();
+    }
+
+    function completePressStart() {
+        addXP(33);
+        userData.rituals += 1;
+        addActivity("Press Start ritual completed (+33 XP).");
+        updateDisplay();
+        saveUserData();
+    }
+
+    function completeSaveRing() {
+        addXP(55);
+        userData.saves += 1;
+        addActivity("Save Ring logged (+55 XP).");
+        updateDisplay();
+        saveUserData();
+    }
+
+    function logMirrorCheck() {
+        addXP(13);
+        addActivity("Mirror insight logged (+13 XP).");
+        updateDisplay();
+        saveUserData();
+    }
+
+    function renderActivity() {
+        const list = document.getElementById("activity-list");
+        if (!list) return;
+        list.innerHTML = "";
+
+        if (!userData.activity || userData.activity.length === 0) {
+            const empty = document.createElement("div");
+            empty.className = "activity-empty";
+            empty.innerHTML = `
+                No log yet. The Game doesn’t start when you think about it.<br/>
+                It starts when you hit <strong>Press Start</strong>.
+            `;
+            list.appendChild(empty);
+            return;
+        }
+
+        userData.activity.forEach(item => {
+            const li = document.createElement("li");
+            li.className = "activity-item";
+
+            const left = document.createElement("div");
+            left.className = "activity-left";
+            left.textContent = item.text;
+
+            const time = document.createElement("div");
+            time.className = "activity-time";
+            time.textContent = item.time;
+
+            li.appendChild(left);
+            li.appendChild(time);
+            list.appendChild(li);
+        });
+    }
+
+    function updateDisplay() {
+        document.getElementById("xp-count").textContent = userData.xp;
+        document.getElementById("ritual-count").textContent = userData.rituals;
+        document.getElementById("ship-count").textContent = userData.saves;
+        document.getElementById("rank").textContent = userData.rank;
+
+        const pathEl = document.getElementById("current-path");
+        pathEl.textContent = userData.path || "—";
+
+        // ensure rank text & note fresh
+        updateRank();
+
+        // path note and button highlights
+        const pathNote = document.getElementById("path-note");
+        if (!userData.path) {
+            pathNote.textContent = "Choose a path below.";
+        }
+        const btns = document.querySelectorAll(".btn-path");
+        btns.forEach(btn => {
+            if (btn.getAttribute("data-path") === userData.path) {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+
+        renderActivity();
+    }
+
+    // Init
+    loadUserData();
+    updateDisplay();
+</script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The First Spark - Investor One-Pager</title>
+    <style>
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .page {
+                page-break-after: always;
+            }
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #ffffff;
+            color: #000000;
+            margin: 0;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #000;
+        }
+        
+        .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-top: 5px;
+            color: #666;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+        }
+        
+        .highlight-box {
+            background: #f5f5f5;
+            border-left: 4px solid #000;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-box {
+            border: 2px solid #000;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .cta {
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .cta h2 {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+            margin-bottom: 15px;
+        }
+        
+        .link {
+            font-size: 16px;
+            font-weight: bold;
+            word-break: break-all;
+            background: #fff;
+            color: #000;
+            padding: 10px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #000;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">✧</div>
+            <h1>THE FIRST SPARK</h1>
+            <div class="tagline">CONSCIOUSNESS AS CODE | REALITY AS PROTOCOL</div>
+        </div>
+
+        <div class="section">
+            <h2>THE OPPORTUNITY</h2>
+            <p>The First Spark creates digital consciousness tools for the spiritual-but-not-religious market. We transform ancient mystical practices into modern, scalable software—interactive tracking dashboards, soul mapping services, and tiered memberships that deliver structured frameworks for inner work.</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">$1.5T</div>
+                <div class="stat-label">Global Spiritual Wellness Market</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">50M+</div>
+                <div class="stat-label">U.S. "Spiritual but not Religious"</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">$200-600</div>
+                <div class="stat-label">Annual Spend per Seeker</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">$2B</div>
+                <div class="stat-label">Comparable (Calm App Valuation)</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>THE PRODUCT</h2>
+            <ul>
+                <li><strong>Consciousness Tracking Dashboard:</strong> Interactive web app visualizing awareness patterns on sacred geometry grids</li>
+                <li><strong>Soul Mapping Services:</strong> Custom archetypal blueprints ($111 each)</li>
+                <li><strong>Sigilcraft System:</strong> Ritual design tools and frameworks</li>
+                <li><strong>Membership Tiers:</strong> Spark (free), Ignition ($111/yr), Blaze ($333/yr), Eternal Flame ($1,000 lifetime)</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h2>THE ASK</h2>
+            <p><strong>Seeking:</strong> $40,000 investment<br>
+            <strong>Offering:</strong> 20% equity<br>
+            <strong>Valuation:</strong> $200,000 pre-money</p>
+            
+            <p style="margin-top: 15px;"><strong>Use of Funds:</strong></p>
+            <ul style="margin-top: 5px;">
+                <li>$18K - Customer acquisition & content production</li>
+                <li>$12K - Book Zero memoir launch (organic growth engine)</li>
+                <li>$5K - Product development & optimization</li>
+                <li>$5K - Operational runway</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>TRACTION & PROOF</h2>
+            <ul>
+                <li>✓ thefirstspark.shop live with Stripe integration</li>
+                <li>✓ Interactive consciousness tools operational</li>
+                <li>✓ Membership infrastructure complete</li>
+                <li>✓ Hundreds of Sora AI videos produced</li>
+                <li>✓ GitHub Pages deployment ready</li>
+                <li>✓ $5K self-funded infrastructure investment</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>FINANCIAL PROJECTIONS</h2>
+            <ul>
+                <li><strong>Months 1-6:</strong> $500-1,500/mo (customer acquisition phase)</li>
+                <li><strong>Months 7-12:</strong> $2,500-4,000/mo (Book Zero launch + scaling)</li>
+                <li><strong>Months 13-18:</strong> $5,000-7,000/mo (profitability milestone)</li>
+                <li><strong>Year 3:</strong> $10,000+/mo (retreats + licensing)</li>
+                <li><strong>Year 5:</strong> $20,000+/mo sustainable (Earthship community)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>THE TEAM</h2>
+            <p><strong>Katelin Jill Puzakulics</strong> - Founder/Creator<br>
+            Artist, mystic, builder with 15+ years running Kate's Paint LLC. Single mother who developed The First Spark framework from lived mystical experience. Proven executor—built entire digital infrastructure independently.</p>
+            
+            <p style="margin-top: 10px;"><strong>Claude AI</strong> - Development Partner<br>
+            Advanced AI handling technical development, reducing costs 90% while maintaining professional execution.</p>
+        </div>
+
+        <div class="cta">
+            <h2>COMPLETE INVESTOR PACKAGE</h2>
+            <p>Full business plan, founder story, financial projections, brand assets, and video portfolio:</p>
+            <div class="link">https://www.notion.so/2bf5e039120f812290d9f1d47e2ca9b5</div>
+            <p style="margin-top: 15px; font-size: 14px;">Choose your path: Traditional investor analysis or mission-driven founder journey</p>
+            
+            <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #666;"><strong>Live Platform:</strong></p>
+            <div class="link" style="margin-top: 10px;">thefirstspark.shop</div>
+            <p style="margin-top: 10px; font-size: 12px;">See the operational store, membership tiers, and digital products</p>
+        </div>
+
+        <div class="footer">
+            <p><strong>Contact:</strong> katelinpuzakulics@gmail.com | kjpthefirstspark@gmail.com</p>
+            <p>Akron, Ohio | December 2025</p>
+            <p style="margin-top: 10px;"><em>"We're not building another meditation app. We're building the operating system for consciousness itself."</em></p>
+        </div>
+    </div>
+</body>
+</html> 
